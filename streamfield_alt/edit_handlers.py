@@ -1,4 +1,8 @@
+import json
+
 from wagtail.wagtailadmin.edit_handlers import BaseFieldPanel
+
+from .schema import get_block_schema
 
 
 class BaseStreamFieldPanel(BaseFieldPanel):
@@ -21,6 +25,10 @@ class BaseStreamFieldPanel(BaseFieldPanel):
         # a StreamField may consist of many input fields, so it's not meaningful to
         # attach the label to any specific one
         return ""
+
+    @classmethod
+    def get_schema_json(cls):
+        return json.dumps(get_block_schema(cls.block_def))
 
 
 class StreamFieldPanel(object):
