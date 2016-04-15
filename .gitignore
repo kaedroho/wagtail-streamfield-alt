@@ -1,2 +1,4 @@
 *.pyc
 /wagtail_streamfield_alt.egg-info
+/node_modules
+/npm-debug.log
