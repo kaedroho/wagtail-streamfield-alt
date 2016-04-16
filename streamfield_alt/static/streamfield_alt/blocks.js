@@ -1,11 +1,6 @@
 import * as React from 'react';
 
 
-class BaseBlock extends React.Component {
-
-}
-
-
 class StreamMenu extends React.Component {
     constructor(props) {
         super(props);
@@ -90,7 +85,7 @@ class StreamChild extends React.Component {
     }
 }
 
-class StreamBlock extends BaseBlock {
+class StreamBlock extends React.Component {
     render() {
         let childBlocks = [];
 
@@ -121,7 +116,7 @@ class StreamBlock extends BaseBlock {
     }
 }
 
-class StructBlock extends BaseBlock {
+class StructBlock extends React.Component {
     render() {
         let fields = [];
 
@@ -146,7 +141,7 @@ class StructBlock extends BaseBlock {
     }
 }
 
-class RichTextBlock extends BaseBlock {
+class RichTextBlock extends React.Component {
     render() {
         return <div className="field char_field widget-rich_text_area fieldname-paragraph">
             <div className="field-content">
