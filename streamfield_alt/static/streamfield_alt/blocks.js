@@ -141,6 +141,18 @@ class StructBlock extends React.Component {
     }
 }
 
+class CharBlock extends React.Component {
+    render() {
+        return <div className="field char_field widget-text_input fieldname-attribution">
+            <div className="field-content">
+                <div className="input">
+                    <input id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} value={this.props.value} type="text" />
+               </div>
+            </div>
+        </div>;
+    }
+}
+
 class RichTextBlock extends React.Component {
     render() {
         return <div className="field char_field widget-rich_text_area fieldname-paragraph">
@@ -161,6 +173,7 @@ class RichTextBlock extends React.Component {
 let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.StreamBlock': StreamBlock,
     'wagtail.core.StructBlock': StructBlock,
+    'wagtail.core.CharBlock': CharBlock,
     'wagtail.core.RichTextBlock': RichTextBlock,
 }
 
