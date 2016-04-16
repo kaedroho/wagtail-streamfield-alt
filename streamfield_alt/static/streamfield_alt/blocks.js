@@ -121,6 +121,31 @@ class StreamBlock extends BaseBlock {
     }
 }
 
+class StructBlock extends BaseBlock {
+    render() {
+        let fields = [];
+
+        for (let field in this.props.value) {
+            let value = this.props.value[field];
+            let schema = this.props.schema.child_blocks[field];
+            let path = `${this.props.path}-${field}`;
+
+            fields.push(
+                <li key={field}>
+                    <label for={path}>{field}</label>
+                    {renderBlock(value, schema, path)}
+                </li>
+            );
+        }
+
+        return <div className="struct-block">
+            <ul className="fields">
+                {fields}
+            </ul>
+        </div>;
+    }
+}
+
 class RichTextBlock extends BaseBlock {
     render() {
         return <div className="field char_field widget-rich_text_area fieldname-paragraph">
@@ -140,6 +165,7 @@ class RichTextBlock extends BaseBlock {
 
 let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.StreamBlock': StreamBlock,
+    'wagtail.core.StructBlock': StructBlock,
     'wagtail.core.RichTextBlock': RichTextBlock,
 }
 
