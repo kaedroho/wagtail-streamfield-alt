@@ -121,9 +121,26 @@ class StreamBlock extends BaseBlock {
     }
 }
 
+class RichTextBlock extends BaseBlock {
+    render() {
+        return <div className="field char_field widget-rich_text_area fieldname-paragraph">
+            <div className="field-content">
+                <div className="input">
+                    <textarea cols="40" id={`${this.props.path}-value`} name={`${this.props.path}-value`} placeholder="Paragraph" rows="10">{this.props.value}</textarea>
+                </div>
+            </div>
+        </div>;
+    }
+
+    componentDidMount() {
+        makeRichTextEditable(`${this.props.path}-value`);
+    }
+}
+
 
 let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.StreamBlock': StreamBlock,
+    'wagtail.core.RichTextBlock': RichTextBlock,
 }
 
 // TEMPORARY: A placeholder to stop code from crashing due to missing blocks
