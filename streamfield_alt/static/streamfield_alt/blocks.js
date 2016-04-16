@@ -75,7 +75,7 @@ class StreamChild extends React.Component {
     render() {
         return <li id={`${this.props.path}-container`} className={`sequence-member blockname-${this.props.type}`}>
             <div className="sequence-controls">
-                <h3><label for={`${this.props.path}-value`}>Paragraph</label></h3>
+                <h3><label for={`${this.props.path}-value`}>{this.props.type}</label></h3>
                 <div className="button-group button-group-square">
                     <button type="button" id={`${this.props.path}-moveup`} title="Move up" className="icon text-replace icon-order-up disabled">Move up</button>
                     <button type="button" id={`${this.props.path}-movedown`} title="Move down" className="icon text-replace icon-order-down">Move down</button>
