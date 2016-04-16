@@ -146,7 +146,7 @@ class CharBlock extends React.Component {
         return <div className="field char_field widget-text_input fieldname-attribution">
             <div className="field-content">
                 <div className="input">
-                    <input id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} value={this.props.value} type="text" />
+                    <input id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} defaultValue={this.props.value} type="text" />
                </div>
             </div>
         </div>;
@@ -158,7 +158,7 @@ class TextBlock extends React.Component {
         return <div className="field char_field widget-admin_auto_height_text_input fieldname-quote">
             <div className="field-content">
                 <div className="input">
-                    <textarea style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '93px'}} data-autosize-on="true" cols="40" id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} rows="1">{this.props.value}</textarea>
+                    <textarea style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '93px'}} data-autosize-on="true" cols="40" id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} rows="1" defaultValue={this.props.value} />
                 </div>
             </div>
         </div>;
@@ -174,7 +174,7 @@ class RichTextBlock extends React.Component {
         return <div className="field char_field widget-rich_text_area fieldname-paragraph">
             <div className="field-content">
                 <div className="input">
-                    <textarea cols="40" id={`${this.props.path}-value`} name={`${this.props.path}-value`} placeholder="Paragraph" rows="10">{this.props.value}</textarea>
+                    <textarea cols="40" id={`${this.props.path}-value`} name={`${this.props.path}-value`} placeholder="Paragraph" rows="10" defaultValue={this.props.value} />
                 </div>
             </div>
         </div>;
