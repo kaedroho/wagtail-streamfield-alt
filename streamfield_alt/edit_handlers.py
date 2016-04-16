@@ -10,6 +10,17 @@ from .schema import get_block_schema
 class BaseStreamFieldPanel(BaseFieldPanel):
     object_template = "streamfield_alt/streamfield.html"
 
+    def classes(self):
+        classes = super(BaseStreamFieldPanel, self).classes()
+        classes.append("stream-field")
+
+        # In case of a validation error, BlockWidget will take care of outputting the error on the
+        # relevant sub-block, so we don't want the stream block as a whole to be wrapped in an 'error' class.
+        if 'error' in classes:
+            classes.remove("error")
+
+        return classes
+
     def get_data_json(self):
         value = self.bound_field.value()
         return json.dumps(self.block_def.get_prep_value(value), cls=DjangoJSONEncoder)
