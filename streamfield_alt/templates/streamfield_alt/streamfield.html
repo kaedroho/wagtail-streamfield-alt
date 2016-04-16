@@ -1,0 +1,17 @@
+<fieldset>
+    <legend>{{ self.heading }}</legend>
+    <ul class="fields">
+        <li>
+            <div id="{{ self.id_for_label }}" class="streamfield-alt">
+                <input type="hidden" name="{{ self.bound_field.name }}" value="{{ self.get_data_json }}">
+                <div class="streamfield-alt-ui"></div>
+            </div>
+        </li>
+    </ul>
+</fieldset>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        StreamFieldAlt.init(document.getElementById('{{ self.id_for_label }}'), {{ self.get_schema_json|safe }});
+    });
+</script>

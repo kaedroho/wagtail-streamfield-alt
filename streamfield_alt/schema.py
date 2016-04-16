@@ -12,18 +12,18 @@ def get_block_schema(block):
     if isinstance(block, blocks.StreamBlock):
         return {
             'type': 'wagtail.core.StreamBlock',
-            'child_blocks': [
-                [name, get_block_schema(child_block)]
+            'child_blocks': {
+                name: get_block_schema(child_block)
                 for name, child_block in block.child_blocks.items()
-            ],
+            },
         }
     elif isinstance(block, blocks.StructBlock):
         return {
             'type': 'wagtail.core.StructBlock',
-            'child_blocks': [
-                [name, get_block_schema(child_block)]
+            'child_blocks': {
+                name: get_block_schema(child_block)
                 for name, child_block in block.child_blocks.items()
-            ],
+            },
         }
     elif isinstance(block, blocks.ListBlock):
         return {

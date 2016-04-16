@@ -1,30 +1,18 @@
 import json
 
+from django.core.serializers.json import DjangoJSONEncoder
+
 from wagtail.wagtailadmin.edit_handlers import BaseFieldPanel
 
 from .schema import get_block_schema
 
 
 class BaseStreamFieldPanel(BaseFieldPanel):
-    def classes(self):
-        classes = super(BaseStreamFieldPanel, self).classes()
-        classes.append("stream-field")
+    object_template = "streamfield_alt/streamfield.html"
 
-        # In case of a validation error, BlockWidget will take care of outputting the error on the
-        # relevant sub-block, so we don't want the stream block as a whole to be wrapped in an 'error' class.
-        if 'error' in classes:
-            classes.remove("error")
-
-        return classes
-
-    @classmethod
-    def html_declarations(cls):
-        return cls.block_def.all_html_declarations()
-
-    def id_for_label(self):
-        # a StreamField may consist of many input fields, so it's not meaningful to
-        # attach the label to any specific one
-        return ""
+    def get_data_json(self):
+        value = self.bound_field.value()
+        return json.dumps(self.block_def.get_prep_value(value), cls=DjangoJSONEncoder)
 
     @classmethod
     def get_schema_json(cls):
