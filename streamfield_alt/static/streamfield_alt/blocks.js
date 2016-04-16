@@ -185,6 +185,38 @@ class RichTextBlock extends React.Component {
     }
 }
 
+class ImageChooserBlock extends React.Component {
+    render() {
+        return <div className="field model_choice_field widget-admin_image_chooser fieldname-image">
+            <div className="field-content">
+                <div className="input">
+                    <div id={`${this.props.path}-chooser`} className="chooser image-chooser">
+                        <div className="chosen">
+                            <div className="preview-image">
+                                <img alt="Wagtail collects insects by Margrit" className="show-transparency" src="/media/images/wagtail_collects_insects_by_Maggi_94.max-165x165.jpg" height="102" width="165" />
+                            </div>
+                            <ul className="actions">
+                                <li>
+                                    <button type="button" className="action-choose button-small button-secondary">Choose another image</button>
+                                </li>
+                                <li><a href={`/admin/images/${this.props.value}/`} className="edit-link button button-small button-secondary" target="_blank">Edit this image</a> </li>
+                            </ul>
+                        </div>
+                        <div className="unchosen">
+                            <button type="button" className="action-choose button-small button-secondary">Choose an image</button>
+                        </div>
+                    </div>
+                    <input id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} value={this.props.value} type="hidden" />
+                </div>
+            </div>
+        </div>
+    }
+
+    componentDidMount() {
+        createImageChooser(this.props.path);
+    }
+}
+
 
 let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.StreamBlock': StreamBlock,
@@ -192,6 +224,7 @@ let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.CharBlock': CharBlock,
     'wagtail.core.TextBlock': TextBlock,
     'wagtail.core.RichTextBlock': RichTextBlock,
+    'wagtail.images.ImageChooserBlock': ImageChooserBlock,
 }
 
 // TEMPORARY: A placeholder to stop code from crashing due to missing blocks
