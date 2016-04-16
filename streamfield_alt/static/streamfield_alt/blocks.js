@@ -153,6 +153,22 @@ class CharBlock extends React.Component {
     }
 }
 
+class TextBlock extends React.Component {
+    render() {
+        return <div className="field char_field widget-admin_auto_height_text_input fieldname-quote">
+            <div className="field-content">
+                <div className="input">
+                    <textarea style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '93px'}} data-autosize-on="true" cols="40" id={this.props.path} name={this.props.path} placeholder={this.props.schema.label} rows="1">{this.props.value}</textarea>
+                </div>
+            </div>
+        </div>;
+    }
+
+    componentDidMount() {
+        autosize($(`#${this.props.path}`));
+    }
+}
+
 class RichTextBlock extends React.Component {
     render() {
         return <div className="field char_field widget-rich_text_area fieldname-paragraph">
@@ -174,6 +190,7 @@ let BLOCK_TYPES_REGISTRY = {
     'wagtail.core.StreamBlock': StreamBlock,
     'wagtail.core.StructBlock': StructBlock,
     'wagtail.core.CharBlock': CharBlock,
+    'wagtail.core.TextBlock': TextBlock,
     'wagtail.core.RichTextBlock': RichTextBlock,
 }
 
