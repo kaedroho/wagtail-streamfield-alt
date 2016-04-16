@@ -29,37 +29,23 @@ class StreamMenu extends React.Component {
     }
 
     render() {
+        let choices = [];
+
+        for (let choice in this.props.schema.child_blocks) {
+            let schema = this.props.schema.child_blocks[choice];
+
+            choices.push(
+                <li key={choice}>
+                    <button type="button" className="action-add-block-h2 icon icon-title"><span>{schema.label}</span> </button>
+                </li>
+            );
+        }
+
         return <div className={this.getClassNames().join(' ')} id={this.props.id}>
             <a className="toggle" onClick={e => this.onToggle(e)}><span>Insert block</span></a>
             <div style={{height: 0}} className="stream-menu-inner">
                 <ul>
-                    <li>
-                        <button type="button" className="action-add-block-h2 icon icon-title"><span>H2</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-h3 icon icon-title"><span>H3</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-h4 icon icon-title"><span>H4</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-intro icon icon-pilcrow"><span>Intro</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-paragraph icon icon-pilcrow"><span>Paragraph</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-aligned_image icon icon-image"><span>Aligned image</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-pullquote icon icon-openquote"><span>Pullquote</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-aligned_html icon icon-code"><span>Raw HTML</span> </button>
-                    </li>
-                    <li>
-                        <button type="button" className="action-add-block-document icon icon-doc-full-inverse"><span>Document</span> </button>
-                    </li>
+                    {choices}
                 </ul>
             </div>
         </div>;
@@ -95,14 +81,14 @@ class StreamBlock extends React.Component {
             let value = this.props.value[id].value;
             let schema = this.props.schema.child_blocks[type];
 
-            childBlocks.push(<StreamChild key={id} path={path} type={type} value={value} schema={schema} parentSchema={this.props.schama} />);
+            childBlocks.push(<StreamChild key={id} path={path} type={type} value={value} schema={schema} parentSchema={this.props.schema} />);
         }
 
         return <div className="field block_field block_widget ">
             <div className="field-content">
                 <div className="input  ">
                     <div className="sequence-container sequence-type-stream">
-                        <StreamMenu id="body-prependmenu" schema={this.props.schema} />
+                        <StreamMenu id={`${this.props.path}-prependmenu`} schema={this.props.schema} />
 
                         <div className="sequence-container-inner">
                             <ul id="body-list" className="sequence">
