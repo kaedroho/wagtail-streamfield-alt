@@ -1,0 +1,17 @@
+.stream-menu-enter {
+    height: 0;
+}
+
+.stream-menu-enter.stream-menu-enter-active {
+    height: 210px;
+    transition: height 0.3s;
+}
+
+.stream-menu-leave {
+    height: 210px;
+}
+
+.stream-menu-leave.stream-menu-leave-active {
+    height: 0;
+    transition: height 0.3s;
+}

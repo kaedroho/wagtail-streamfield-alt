@@ -41,13 +41,20 @@ class StreamMenu extends React.Component {
             );
         }
 
-        return <div className={this.getClassNames().join(' ')} id={this.props.id}>
-            <a className="toggle" onClick={e => this.onToggle(e)}><span>Insert block</span></a>
-            <div style={{height: 0}} className="stream-menu-inner">
+        let menu = [];
+        if (this.state.isOpen) {
+            menu = <div key="menu" className="stream-menu-inner">
                 <ul>
                     {choices}
                 </ul>
             </div>
+        }
+
+        return <div className={this.getClassNames().join(' ')} id={this.props.id}>
+            <a className="toggle" onClick={e => this.onToggle(e)}><span>Insert block</span></a>
+            <React.addons.CSSTransitionGroup transitionName="stream-menu" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+                {menu}
+            </React.addons.CSSTransitionGroup>
         </div>;
     }
 }
