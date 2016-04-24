@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import {StreamBlock, streamBlockReducerBuilder} from './stream_block';
-import {StructBlock} from './struct_block';
-import {CharBlock, TextBlock, RichTextBlock, ImageChooserBlock} from './field_block';
+import {StructBlock, structBlockReducerBuilder} from './struct_block';
+import {CharBlock, TextBlock, RichTextBlock, ImageChooserBlock, fieldBlockReducerBuilder} from './field_block';
 
 
 let BLOCK_TYPES_REGISTRY = {
@@ -16,6 +16,11 @@ let BLOCK_TYPES_REGISTRY = {
 
 let BLOCK_REDUCER_BUILDERS_REGISTRY = {
     'wagtail.core.StreamBlock': streamBlockReducerBuilder,
+    'wagtail.core.StructBlock': structBlockReducerBuilder,
+    'wagtail.core.CharBlock': fieldBlockReducerBuilder,
+    'wagtail.core.TextBlock': fieldBlockReducerBuilder,
+    'wagtail.core.RichTextBlock': fieldBlockReducerBuilder,
+    'wagtail.images.ImageChooserBlock': fieldBlockReducerBuilder,
 };
 
 
@@ -34,5 +39,7 @@ export function renderBlock(store, value, schema, path) {
 
 
 export function getBlockReducer(schema) {
-    return BLOCK_REDUCER_BUILDERS_REGISTRY[schema.type](schema) || ((state, action) => state);
+    let builder = BLOCK_REDUCER_BUILDERS_REGISTRY[schema.type] || ((schema) => ((state, action) => state));
+
+    return builder(schema);
 }

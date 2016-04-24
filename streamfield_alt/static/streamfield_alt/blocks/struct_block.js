@@ -1,6 +1,27 @@
 import * as React from 'react';
 
-import {renderBlock} from '.';
+import {renderBlock, getBlockReducer} from '.';
+
+
+export function structBlockReducerBuilder(schema) {
+    return (state=[], action) => {
+        if (!action.pathComponents.length) {
+            // Action is for this block
+        } else {
+            // Action is for a child block
+            let fieldName = action.pathComponents[0];
+            let newAction = Object.assign({}, action, {
+                pathComponents: action.pathComponents.slice(1),
+            });
+
+            return Object.assign({}, state, {
+                [fieldName]: getBlockReducer(schema.child_blocks[fieldName])(state[fieldName], newAction),
+            });
+        }
+
+        return state;
+    }
+}
 
 
 export class StructBlock extends React.Component {

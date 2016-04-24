@@ -4,8 +4,10 @@ import {renderBlock, getBlockReducer} from '.';
 
 
 export function streamBlockReducerBuilder(schema) {
+
     return (state=[], action) => {
         if (!action.pathComponents.length) {
+            // Action is for this block
             switch (action.type) {
                 case 'NEW_CHILD_BLOCK':
                     let newBlock = {
@@ -19,6 +21,22 @@ export function streamBlockReducerBuilder(schema) {
                         ...state.slice(action.position),
                     ];
             }
+        } else {
+            // Action is for a child block
+            let blockId = action.pathComponents[0];
+            let newAction = Object.assign({}, action, {
+                pathComponents: action.pathComponents.slice(1),
+            });
+            let blockType = state[blockId].type;
+            let blockValue = state[blockId].value;
+
+            let newState = state.slice();
+            newState[blockId] = {
+                type: blockType,
+                value: getBlockReducer(schema.child_blocks[blockType])(blockValue, newAction)
+            };
+
+            return newState;
         }
 
         return state;
