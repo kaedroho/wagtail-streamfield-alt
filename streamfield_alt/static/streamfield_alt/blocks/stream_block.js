@@ -1,6 +1,29 @@
 import * as React from 'react';
 
-import {renderBlock} from '.';
+import {renderBlock, getBlockReducer} from '.';
+
+
+export function streamBlockReducerBuilder(schema) {
+    return (state=[], action) => {
+        if (!action.pathComponents.length) {
+            switch (action.type) {
+                case 'NEW_CHILD_BLOCK':
+                    let newBlock = {
+                        type: action.blockType,
+                        value: schema.child_blocks[action.blockType].default_value,
+                    };
+
+                    return [
+                        ...state.slice(0, action.position),
+                        newBlock,
+                        ...state.slice(action.position),
+                    ];
+            }
+        }
+
+        return state;
+    }
+}
 
 
 class StreamMenu extends React.Component {
@@ -94,7 +117,7 @@ class StreamChild extends React.Component {
                 </div>
             </div>
             <div className="sequence-member-inner ">
-                {renderBlock(this.props.value, this.props.schema, this.props.path)}
+                {renderBlock(this.props.store, this.props.value, this.props.schema, this.props.path)}
             </div>
             <StreamMenu id={`${this.props.path}-appendmenu`} schema={this.props.parentSchema} onAddItem={this.props.onAddItem} />
         </li>;
@@ -102,8 +125,13 @@ class StreamChild extends React.Component {
 }
 
 export class StreamBlock extends React.Component {
-    addChildBlock(position, type) {
-        // TODO
+    newChildBlock(type, position) {
+        this.props.store.dispatch({
+            type: 'NEW_CHILD_BLOCK',
+            path: this.props.path,
+            position: position,
+            blockType: type,
+        });
     }
 
     render() {
@@ -117,14 +145,14 @@ export class StreamBlock extends React.Component {
             let isFirst = id == 0;
             let isLast = id ==this.props.value.length - 1;
 
-            childBlocks.push(<StreamChild key={id} path={path} type={type} value={value} schema={schema} parentSchema={this.props.schema} onAddItem={type => this.addChildBlock(type, parseInt(id) + 1)} isFirst={isFirst} isLast={isLast} />);
+            childBlocks.push(<StreamChild key={id} store={this.props.store} path={path} type={type} value={value} schema={schema} parentSchema={this.props.schema} onAddItem={type => this.newChildBlock(type, parseInt(id) + 1)} isFirst={isFirst} isLast={isLast} />);
         }
 
         return <div className="field block_field block_widget ">
             <div className="field-content">
                 <div className="input  ">
                     <div className="sequence-container sequence-type-stream">
-                        <StreamMenu id={`${this.props.path}-prependmenu`} schema={this.props.schema} onAddItem={type => this.addChildBlock(type, 0)} />
+                        <StreamMenu id={`${this.props.path}-prependmenu`} schema={this.props.schema} onAddItem={type => this.newChildBlock(type, 0)} />
 
                         <div className="sequence-container-inner">
                             <ul id="body-list" className="sequence">

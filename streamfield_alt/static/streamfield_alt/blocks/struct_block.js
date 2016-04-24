@@ -15,7 +15,7 @@ export class StructBlock extends React.Component {
             fields.push(
                 <li key={field}>
                     <label for={path}>{schema.label}</label>
-                    {renderBlock(value, schema, path)}
+                    {renderBlock(this.props.store, value, schema, path)}
                 </li>
             );
         }

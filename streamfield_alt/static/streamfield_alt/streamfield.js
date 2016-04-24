@@ -1,16 +1,47 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {createStore} from 'redux';
 
-import {renderBlock} from './blocks';
+import {renderBlock, getBlockReducer} from './blocks';
 
 
 export function init(element, schema) {
+    function reducer(state=null, action) {
+        if (action.type === 'SET_INITIAL_STATE') {
+            return action.state;
+        }
+
+        if (action.path) {
+            let pathComponents = action.path.split('-');
+            let fieldName = pathComponents.shift();
+
+            let newAction = Object.assign({}, action, {
+                pathComponents,
+                fieldName,
+            });
+
+            return getBlockReducer(schema)(state, newAction);
+        }
+
+        return state;
+    }
+
+    let store = createStore(reducer);
+
+
+    let uiElement = element.querySelector('div.streamfield-alt-ui')
+    store.subscribe(() => {
+        // Render
+        ReactDOM.render(renderBlock(store, store.getState(), schema, 'body'), uiElement);
+    });
+
+
     // Get data
     let dataElement = element.querySelector('input[type="hidden"]');
     let data = JSON.parse(dataElement.value);
 
-    // Render
-    let uiElement = element.querySelector('div.streamfield-alt-ui')
-    ReactDOM.render(renderBlock(data, schema, 'body'), uiElement);
-
+    store.dispatch({
+        type: 'SET_INITIAL_STATE',
+        state: data,
+    });
 }
